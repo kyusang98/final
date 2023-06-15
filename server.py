@@ -1,5 +1,5 @@
 from bottle import post, route, run, request, template, response
-
+import base64
 from crawl import dictionary
 
 import time
@@ -60,6 +60,7 @@ def login():
             <form action='/login' method='post'>
                 Username: <input name='username' type='text' />
                 Password: <input name='password' type='password' />
+                Phonenum: <input name='pnum' type='text' />
                 <input value='Login' type='submit' />
             </form> 
             '''
@@ -74,6 +75,11 @@ def check_login(username, password):
 def login_auth():
     username = request.forms.get('username')
     password = request.forms.get('password')
+    phonenum = request.forms.get('pnum')
+    password_bytes = password.encode('ascii')
+    password_base64 = base64.b64encode(password_bytes)
+    #https://webisfree.com/2020-11-07/python-base64
+
     if check_login(username, password):
         date = time.strftime('%Y.%m.%d - %H:%M:%S') #https://bio-info.tistory.com/118
         user = username
@@ -81,6 +87,7 @@ def login_auth():
         write_data(user, date, value, dynamodb)
         return '''
                <p>User %s has been successfully logged in!</p>
+               <p>Password:%s, Phonenumber:%s</p>
                <p>Crawled Data: %s</p>
                <html>
                   <head>
@@ -91,7 +98,7 @@ def login_auth():
                        <img id="bg" class="img-thumbnail" src="/video_feed"> 
                   </body>
                </html>
-               ''' % (username,dictionary)
+               ''' % (username,password_base64,phonenum,dictionary)
     else:
         return '<p>Login failed!</p>'
 
