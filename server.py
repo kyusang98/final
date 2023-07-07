@@ -13,7 +13,7 @@ import telegram
 import asyncio
 
 #telegram code
-bot_token = '6082136191:AAG35lMMeZnAxVUT9V-OrFn_aTILFvfGxys'
+bot_token = '텔레그램 엑세스 토큰'
 bot = telegram.Bot(token = bot_token)
 
 async def get_updates():
@@ -41,8 +41,8 @@ def write_data(user, date, value, dynamodb):
     print('item', user, 'added!')
     print('-------')
 
-Access_Key = 'AKIAYBRKZA2B45R472XE'
-Secret_Key = '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'
+Access_Key = '엑세스키'
+Secret_Key = '비밀엑세스키'
 
 dynamodb = boto3.resource('dynamodb',
                           aws_access_key_id=Access_Key,
